@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode.opmodes.tele;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.commands.DriveDefault;
 import org.firstinspires.ftc.teamcode.commands.RunExtrudingArm;
@@ -24,6 +26,8 @@ public class Tele extends Robot implements OpModeCore {
 
     @Override
     public void opModeInit() {
+        intake = new Intake(hardwareMap.get(DcMotor.class, "intake"));
+        extrudingArm = new ExtrudingArm(hardwareMap.get(Servo.class, "arm"));
         Rustboard.updateInputNode("input_1", "Hello from the robot");
         if (alliance == Alliance.RED) {
             backdropPose = redBackdropPose;
@@ -31,10 +35,12 @@ public class Tele extends Robot implements OpModeCore {
 
         drive.setDefaultCommand(new DriveDefault(drive, () -> -controller1.leftStickY.getAsDouble(), () -> controller1.leftStickX.getAsDouble(), () -> -controller1.rightStickX.getAsDouble()));
         controller1.b.and(controller1.x).and(controller1.y).onTrue(new InstantCommand(() -> drive.getOdometry().setPosition(new Pose2d())));
-        controller1.leftTrigger.onTrue(new RunIntake(intake,-SubsystemConstants.Intake.defaultSpeed));
-        controller1.rightTrigger.onTrue(new RunIntake(intake, SubsystemConstants.Intake.defaultSpeed));
-        controller1.leftBumper.onTrue(new RunExtrudingArm(extrudingArm, SubsystemConstants.ExtrudingArm.ServoRetracted));
-        controller1.rightBumper.onTrue(new RunExtrudingArm(extrudingArm, SubsystemConstants.ExtrudingArm.ServoExtended));
+        controller1.leftTrigger.andNot(controller1.rightTrigger).onTrue(new RunIntake(intake,-SubsystemConstants.Intake.defaultSpeed));
+        controller1.rightTrigger.andNot(controller1.leftTrigger).onTrue(new RunIntake(intake, SubsystemConstants.Intake.defaultSpeed));
+        controller1.leftTrigger.andNot(controller1.rightTrigger).onFalse(new RunIntake(intake, 0));
+        controller1.rightTrigger.andNot(controller1.leftTrigger).onFalse(new RunIntake(intake, 0));
+        controller1.leftBumper.andNot(controller1.rightBumper).onTrue(new RunExtrudingArm(extrudingArm, SubsystemConstants.ExtrudingArm.ServoRetracted));
+        controller1.rightBumper.andNot(controller1.leftBumper).onTrue(new RunExtrudingArm(extrudingArm, SubsystemConstants.ExtrudingArm.ServoExtended));
     }
 
     @Override

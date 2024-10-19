@@ -4,15 +4,12 @@ public class SubsystemConstants {
     public static final boolean debugMode = false;
 
     public static final class ExtrudingArm {
-
-        //Todo: note that the servo positions are arbitrary and need to be tuned
-        public static final double ServoExtended = 1.0;
+        public static final double ServoExtended = 0.5;
         public static final double ServoRetracted = 0.0;
     }
 
     public static final class Intake {
-        //Todo: tune the speed if necessary
-        public static final double defaultSpeed = 0.5;
+        public static final double defaultSpeed = 0.8;
     }
 
     public static final class Slide {
