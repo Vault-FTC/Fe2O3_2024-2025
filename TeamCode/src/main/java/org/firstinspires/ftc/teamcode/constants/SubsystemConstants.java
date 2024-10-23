@@ -4,8 +4,8 @@ public class SubsystemConstants {
     public static final boolean debugMode = false;
 
     public static final class ExtrudingArm {
-        public static final double ServoExtended = 0.5;
-        public static final double ServoRetracted = 0.0;
+        public static final double ServoRetracted = 0.0;//0.5
+        public static final double ServoExtended = 0.5;//0.75
     }
 
     public static final class Intake {
