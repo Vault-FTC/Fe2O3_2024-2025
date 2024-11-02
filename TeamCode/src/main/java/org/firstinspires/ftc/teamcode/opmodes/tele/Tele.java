@@ -18,16 +18,10 @@ import org.rustlib.rustboard.Rustboard;
 
 @TeleOp(name = "TeleOp")
 public class Tele extends Robot implements OpModeCore {
-
-    public static Intake intake;
-    public static ExtrudingArm extrudingArm;
-
     public static Pose2d backdropPose = blueBackdropPose;
 
     @Override
     public void opModeInit() {
-        intake = new Intake(hardwareMap.get(DcMotor.class, "intake"));
-        extrudingArm = new ExtrudingArm(hardwareMap.get(Servo.class, "arm"));
         Rustboard.updateInputNode("input_1", "Hello from the robot");
         if (alliance == Alliance.RED) {
             backdropPose = redBackdropPose;
@@ -39,8 +33,7 @@ public class Tele extends Robot implements OpModeCore {
         controller1.rightTrigger.andNot(controller1.leftTrigger).onTrue(new RunIntake(intake, SubsystemConstants.Intake.defaultSpeed));
         controller1.leftTrigger.andNot(controller1.rightTrigger).onFalse(new RunIntake(intake, 0));
         controller1.rightTrigger.andNot(controller1.leftTrigger).onFalse(new RunIntake(intake, 0));
-        controller1.leftBumper.andNot(controller1.rightBumper).onTrue(new RunExtrudingArm(extrudingArm, SubsystemConstants.ExtrudingArm.ServoRetracted));
-        controller1.rightBumper.andNot(controller1.leftBumper).onTrue(new RunExtrudingArm(extrudingArm, SubsystemConstants.ExtrudingArm.ServoExtended));
+
     }
 
     @Override
