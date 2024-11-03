@@ -14,8 +14,8 @@ public class Intake extends Subsystem {
 
     public Intake(HardwareMap hardwareMap) {
         this.motor = hardwareMap.dcMotor.get("intake");
-        this.servo1 = hardwareMap.servo.get("");
-        this.servo2 = hardwareMap.servo.get("");
+        this.servo1 = hardwareMap.servo.get("intakeServo1");
+        this.servo2 = hardwareMap.servo.get("intakeServo2");
     }
 
     public void run(double speed) {
@@ -24,13 +24,13 @@ public class Intake extends Subsystem {
 
     public void groundedPosition(){
 //  todo: figure out these values
-        servo1.setPosition(1);
-        servo2.setPosition(1);
+//        servo2.setPosition(0);
+        servo1.setPosition(0.55);
     }
 
     public void liftedPosition(){
 //  todo: figure out these values
-        servo1.setPosition(1);
-        servo2.setPosition(1);
+//        servo2.setPosition(0);
+        servo1.setPosition(0.1);
     }
 }
