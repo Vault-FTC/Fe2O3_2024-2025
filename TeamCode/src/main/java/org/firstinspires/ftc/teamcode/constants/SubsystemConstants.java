@@ -9,7 +9,7 @@ public class SubsystemConstants {
     }
 
     public static final class Intake {
-        public static final double defaultSpeed = 0.8;
+        public static final double defaultSpeed = 1.0;
         public enum IntakeModes {
             INTAKE(defaultSpeed),
             OUTTAKE(-defaultSpeed),
@@ -21,6 +21,16 @@ public class SubsystemConstants {
                 this.speed = speed;
             }
         }
+    }
+
+    public static final class IntakeSlide {
+        public static final int prepareIntakePosition = 50;
+        public static final int stowIntakePosition = 20;
+        public static final int maxExtensionPosition = 80;
+        public static final int maxTargetError = 10;
+        public static final int defaultIntakePosition = 75;
+        public static final int stowedPosition = 10;
+        public static final int autoPlacePosition = 75;
     }
 
     public static final class Slide {
