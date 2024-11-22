@@ -44,13 +44,13 @@ public abstract class AutonomousContainer extends Robot implements AutonomousCor
 
     @Override
     public void opModeInit() {
-        gameElementDetector = OpenCVGameElementDetector.getBuilder()
-                .setHardwareMap(hardwareMap)
-                .setCameraName("game element detector cam")
-                .setStreamSize(OpenCVGameElementDetector.StreamDimension.HIGH_DEF)
-                .setDetectorPipeline(new DetectorPipeline())
-                .setFrameAveragingCount(VisionConstants.elementDetectionFrameAverageCount)
-                .closePipelineOnOpModeStart()
-                .build();
+//        gameElementDetector = OpenCVGameElementDetector.getBuilder()
+//                .setHardwareMap(hardwareMap)
+//                .setCameraName("game element detector cam")
+//                .setStreamSize(OpenCVGameElementDetector.StreamDimension.HIGH_DEF)
+//                .setDetectorPipeline(new DetectorPipeline())
+//                .setFrameAveragingCount(VisionConstants.elementDetectionFrameAverageCount)
+//                .closePipelineOnOpModeStart()
+//                .build();
     }
 }

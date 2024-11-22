@@ -1,19 +1,14 @@
 package org.firstinspires.ftc.teamcode.opmodes.tele;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.commands.DriveDefault;
 import org.firstinspires.ftc.teamcode.commands.GroundIntakeServo;
 import org.firstinspires.ftc.teamcode.commands.IntakeSlideToPosition;
 import org.firstinspires.ftc.teamcode.commands.LiftIntakeServo;
-import org.firstinspires.ftc.teamcode.commands.RunExtrudingArm;
 import org.firstinspires.ftc.teamcode.commands.RunIntake;
 import org.firstinspires.ftc.teamcode.constants.SubsystemConstants;
 import org.firstinspires.ftc.teamcode.opmodes.Robot;
-import org.firstinspires.ftc.teamcode.subsystems.ExtrudingArm;
-import org.firstinspires.ftc.teamcode.subsystems.Intake;
 import org.rustlib.commandsystem.InstantCommand;
 import org.rustlib.core.OpModeCore;
 import org.rustlib.geometry.Pose2d;
@@ -22,6 +17,7 @@ import org.rustlib.rustboard.Rustboard;
 @TeleOp(name = "TeleOp")
 public class Tele extends Robot implements OpModeCore {
     public static Pose2d backdropPose = blueBackdropPose;
+    public static Pose2d parkPose = leftParkPose;
 
     @Override
     public void opModeInit() {
