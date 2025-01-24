@@ -3,10 +3,16 @@ package org.firstinspires.ftc.teamcode.opmodes;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.VoltageUnit;
-import org.firstinspires.ftc.teamcode.commands.TimedPark;
+import org.firstinspires.ftc.teamcode.commands.IntakeToPosition;
+import org.firstinspires.ftc.teamcode.commands.LeftTimedAutoPark;
+import org.firstinspires.ftc.teamcode.commands.RightTimedAutoPark;
+import org.firstinspires.ftc.teamcode.opmodes.auto.TimedLeftPark;
+import org.firstinspires.ftc.teamcode.opmodes.auto.TimedRightPark;
 import org.firstinspires.ftc.teamcode.subsystems.Drive;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.IntakeSlide;
+import org.firstinspires.ftc.teamcode.subsystems.Placer;
+import org.firstinspires.ftc.teamcode.subsystems.Slide;
 import org.rustlib.config.HardwareConfiguration;
 import org.rustlib.config.PreferenceEditor;
 import org.rustlib.core.RobotBase;
@@ -18,14 +24,14 @@ public abstract class Robot extends RobotBase {
     public static Pose2d blueBackdropPose = new Pose2d(17.0, 30, new Rotation2d(-Math.PI / 2));
     public static Pose2d redBackdropPose = new Pose2d(17.0, 110, new Rotation2d(-Math.PI / 2));
     public static Pose2d leftParkPose = new Pose2d(17.0, 110, new Rotation2d(-Math.PI / 2));
+
     public Drive drive;
-    public static Intake intake;
-//    public static Lights lights;
-    public static IntakeSlide intakeSlide;
-    public static TimedPark timedParkLeft;
-    public static TimedPark timedParkRight;
-//    public static RevBlinkinLedDriver ledDriver;
-    public static ElapsedTime mRunTime;
+    public Intake intake;
+    public IntakeSlide intakeSlide;
+    public ElapsedTime runtime;
+    public LeftTimedAutoPark leftTimedAutoPark;
+    public RightTimedAutoPark rightTimedAutoPark;
+
     //public CameraServer cameraServer;
 
     @Override
@@ -49,14 +55,12 @@ public abstract class Robot extends RobotBase {
 
         //cameraServer = new CameraServer(hardwareMap, "Webcam0");
 
-
-
         drive = new Drive(hardwareMap);
         intake = new Intake(hardwareMap);
-        intakeSlide = new IntakeSlide(hardwareMap, intake);
-//        lights = new Lights(ledDriver);
-        timedParkLeft = new TimedPark(drive, gamepad1, mRunTime, 0.8);
-        timedParkRight = new TimedPark(drive, gamepad1, mRunTime, -0.8);
+        intakeSlide = new IntakeSlide(hardwareMap,intake);
+        runtime = new ElapsedTime();
+        rightTimedAutoPark = new RightTimedAutoPark(drive,runtime);
+        leftTimedAutoPark = new LeftTimedAutoPark(drive,runtime);
     }
 
     @Override

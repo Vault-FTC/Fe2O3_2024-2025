@@ -18,7 +18,7 @@ public class Drive extends DriveSubsystem {
 
     public Drive(HardwareMap hardwareMap) {
         odometry = Odometry.getBuilder()
-                .defineLeftEncoder(new PairedEncoder(hardwareMap.get(DcMotor.class, "lf"), true))
+                .defineLeftEncoder(new PairedEncoder(hardwareMap.get(DcMotor.class, "lf"), false))
                 .defineRightEncoder(new PairedEncoder(hardwareMap.get(DcMotor.class, "rf"), true))
                 .defineBackEncoder(new PairedEncoder(hardwareMap.get(DcMotor.class, "lb")))
                 .setTrackWidth(DriveConstants.Odometry.trackWidth)

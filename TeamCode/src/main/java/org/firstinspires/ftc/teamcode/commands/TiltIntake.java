@@ -1,23 +1,23 @@
 package org.firstinspires.ftc.teamcode.commands;
 
+import org.firstinspires.ftc.teamcode.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.IntakeSlide;
-import org.firstinspires.ftc.teamcode.subsystems.Slide;
 import org.rustlib.commandsystem.Command;
 
 import java.util.function.DoubleSupplier;
 
-public class IntakeSlideDefault extends Command {
-    IntakeSlide slide;
+public class TiltIntake extends Command {
+    Intake intake;
     DoubleSupplier speedSupplier;
 
-    public IntakeSlideDefault(IntakeSlide slide, DoubleSupplier speedSupplier) {
-        this.slide = slide;
+    public TiltIntake(Intake intake, DoubleSupplier speedSupplier) {
+        this.intake = intake;
         this.speedSupplier = speedSupplier;
-        addRequirements(this.slide);
+        addRequirements(this.intake);
     }
 
     @Override
     public void execute() {
-        slide.run(speedSupplier.getAsDouble());
+        intake.runIntMotor(speedSupplier.getAsDouble());
     }
 }

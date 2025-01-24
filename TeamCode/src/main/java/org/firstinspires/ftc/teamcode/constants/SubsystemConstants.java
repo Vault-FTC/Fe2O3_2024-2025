@@ -10,6 +10,12 @@ public class SubsystemConstants {
 
     public static final class Intake {
         public static final double defaultSpeed = 1.0;
+
+        //todo find these!!!
+        public static final int minIntakePosition = 0;
+        public static final int maxIntakePosition = 0;
+
+
         public enum IntakeModes {
             INTAKE(defaultSpeed),
             OUTTAKE(-defaultSpeed),
@@ -24,9 +30,9 @@ public class SubsystemConstants {
     }
 
     public static final class IntakeSlide {
-        public static final int prepareIntakePosition = 50;
-        public static final int stowIntakePosition = 20;
-        public static final int maxExtensionPosition = 80;
+        public static final int prepareIntakePosition = 80;
+        public static final int maxExtensionPosition = 95;
+        public static final int minExtensionPosition = 0;
         public static final int maxTargetError = 10;
         public static final int defaultIntakePosition = 75;
         public static final int stowedPosition = 10;
@@ -41,6 +47,15 @@ public class SubsystemConstants {
         public static final int defaultPlacePosition = 760;
         public static final int stowedPosition = -100;
         public static final int autoPlacePosition = 550;
+    }
+
+
+    public static final class PlacerSlide {
+        //todo figure these out!!!
+        public static final int maxTargetError = 50;
+        public static final int maxExtensionPosition = 1000;
+        public static final int minExtensionPosition = 0;
+
     }
 
     public static final class Placer {
