@@ -18,10 +18,8 @@ public class IntakeSlide extends Subsystem {
 //    Encoder
 
     public IntakeSlide (HardwareMap hardwareMap, Intake intake){
-        this.intSlideServo1 = hardwareMap.crservo.get("intSlide1");
+        this.intSlideServo1 = hardwareMap.crservo.get("intSlide");
         intSlideServo1.setDirection(DcMotorSimple.Direction.FORWARD);
-        this.intSlideServo2 = hardwareMap.crservo.get("intSlide2");
-        intSlideServo2.setDirection(DcMotorSimple.Direction.REVERSE);
 
         this.intake = intake;
     }
@@ -38,6 +36,5 @@ public class IntakeSlide extends Subsystem {
 
     public void run(double speed){
         intSlideServo1.setPower(Range.clip(speed,-0.5,0.5));
-        intSlideServo2.setPower(Range.clip(speed,-0.5,0.5));
     }
 }
