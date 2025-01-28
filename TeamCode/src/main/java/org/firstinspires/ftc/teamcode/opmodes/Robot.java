@@ -12,6 +12,7 @@ import org.firstinspires.ftc.teamcode.subsystems.Drive;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.IntakeSlide;
 import org.firstinspires.ftc.teamcode.subsystems.Placer;
+import org.firstinspires.ftc.teamcode.subsystems.PlacerSlide;
 import org.firstinspires.ftc.teamcode.subsystems.Slide;
 import org.rustlib.config.HardwareConfiguration;
 import org.rustlib.config.PreferenceEditor;
@@ -31,7 +32,8 @@ public abstract class Robot extends RobotBase {
     public ElapsedTime runtime;
     public LeftTimedAutoPark leftTimedAutoPark;
     public RightTimedAutoPark rightTimedAutoPark;
-
+    public PlacerSlide placerSlide;
+    public Placer placer;
     //public CameraServer cameraServer;
 
     @Override
@@ -45,12 +47,12 @@ public abstract class Robot extends RobotBase {
                 .addMotor("rb", 1, HardwareConfiguration.Motors.GOBILDA_5201_SERIES_MOTOR, HardwareConfiguration.HubType.CONTROL_HUB)
                 .addMotor("lf", 2, HardwareConfiguration.Motors.GOBILDA_5201_SERIES_MOTOR, HardwareConfiguration.HubType.CONTROL_HUB)
                 .addMotor("lb", 3, HardwareConfiguration.Motors.GOBILDA_5201_SERIES_MOTOR, HardwareConfiguration.HubType.CONTROL_HUB)
-                .addMotor("intakeSlide", 0, HardwareConfiguration.Motors.GOBILDA_5201_SERIES_MOTOR, HardwareConfiguration.HubType.EXPANSION_HUB)
-                .addMotor("intake", 1, HardwareConfiguration.Motors.GOBILDA_5201_SERIES_MOTOR, HardwareConfiguration.HubType.EXPANSION_HUB)
-                .addServo("intakeServo1", 0, HardwareConfiguration.Servos.SMART_SERVO, HardwareConfiguration.HubType.CONTROL_HUB)
-                .addServo("intakeServo2", 0, HardwareConfiguration.Servos.SMART_SERVO, HardwareConfiguration.HubType.EXPANSION_HUB)
-                .addServo("ledDriver", 2, HardwareConfiguration.Servos.REV_BLINKIN_LED_DRIVER, HardwareConfiguration.HubType.CONTROL_HUB)
-                .addI2CDevice("slide limit", 0, 0, HardwareConfiguration.I2CDevices.REV_DISTANCE_SENSOR, HardwareConfiguration.HubType.CONTROL_HUB)
+//                .addMotor("intakeSlide", 0, HardwareConfiguration.Motors.GOBILDA_5201_SERIES_MOTOR, HardwareConfiguration.HubType.EXPANSION_HUB)
+//                .addMotor("intakeTilt", 1, HardwareConfiguration.Motors.GOBILDA_5201_SERIES_MOTOR, HardwareConfiguration.HubType.EXPANSION_HUB)
+//                .addServo("intakeServo1", 0, HardwareConfiguration.Servos.SMART_SERVO, HardwareConfiguration.HubType.CONTROL_HUB)
+//                .addServo("intakeServo2", 0, HardwareConfiguration.Servos.SMART_SERVO, HardwareConfiguration.HubType.EXPANSION_HUB)
+//                .addServo("ledDriver", 2, HardwareConfiguration.Servos.REV_BLINKIN_LED_DRIVER, HardwareConfiguration.HubType.CONTROL_HUB)
+//                .addI2CDevice("slide limit", 0, 0, HardwareConfiguration.I2CDevices.REV_DISTANCE_SENSOR, HardwareConfiguration.HubType.CONTROL_HUB)
                 .build();
 
         //cameraServer = new CameraServer(hardwareMap, "Webcam0");
@@ -59,6 +61,8 @@ public abstract class Robot extends RobotBase {
         intake = new Intake(hardwareMap);
         intakeSlide = new IntakeSlide(hardwareMap,intake);
         runtime = new ElapsedTime();
+        placer = new Placer(hardwareMap);
+        placerSlide = new PlacerSlide(hardwareMap, placer);
         rightTimedAutoPark = new RightTimedAutoPark(drive,runtime);
         leftTimedAutoPark = new LeftTimedAutoPark(drive,runtime);
     }
