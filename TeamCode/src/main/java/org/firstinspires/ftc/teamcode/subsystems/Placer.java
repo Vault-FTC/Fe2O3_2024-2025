@@ -43,6 +43,9 @@ public class Placer extends Subsystem {
 //        lifter1.setPower(SubsystemConstants.Placer.lifter1PlacePosition);
 //        placer.setPosition(SubsystemConstants.Placer.closePosition);
 //    }
+    public void setGripPosition(double position){
+        placer.setPosition(position);
+    }
 
     public void open() {
         placer.setPosition(SubsystemConstants.Placer.openPosition);
