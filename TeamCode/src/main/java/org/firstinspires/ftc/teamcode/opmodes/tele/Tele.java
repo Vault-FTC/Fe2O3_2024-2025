@@ -5,8 +5,13 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.commands.DriveDefault;
 import org.firstinspires.ftc.teamcode.commands.IntakeSlideDefault;
 import org.firstinspires.ftc.teamcode.commands.IntakeToPosition;
+import org.firstinspires.ftc.teamcode.commands.PlacerGrip;
+import org.firstinspires.ftc.teamcode.commands.PlacerSlideDefault;
+import org.firstinspires.ftc.teamcode.commands.PlacerSlideToPosition;
 import org.firstinspires.ftc.teamcode.commands.RunIntake;
+import org.firstinspires.ftc.teamcode.commands.SlideDefault;
 import org.firstinspires.ftc.teamcode.commands.TiltIntake;
+import org.firstinspires.ftc.teamcode.commands.TiltPlacer;
 import org.firstinspires.ftc.teamcode.constants.SubsystemConstants;
 import org.firstinspires.ftc.teamcode.opmodes.Robot;
 import org.rustlib.commandsystem.InstantCommand;
@@ -28,6 +33,7 @@ public class Tele extends Robot implements OpModeCore {
         drive.enableFastMode();
 
         drive.setDefaultCommand(new DriveDefault(drive, () -> -controller1.leftStickY.getAsDouble(), () -> controller1.leftStickX.getAsDouble(), () -> -controller1.rightStickX.getAsDouble()));
+
         controller1.b.and(controller1.x).and(controller1.y).onTrue(new InstantCommand(() -> drive.getOdometry().setPosition(new Pose2d())));
         controller1.a.and(controller1.b).andNot(controller1.x).andNot(controller1.y).onTrue(new InstantCommand(() -> drive.enableFastMode()));
         controller1.a.and(controller1.x).andNot(controller1.b).andNot(controller1.y).onTrue(new InstantCommand(() -> drive.enableSlowMode()));
@@ -52,6 +58,16 @@ public class Tele extends Robot implements OpModeCore {
         controller1.leftBumper.andNot(controller1.rightBumper).onFalse(new IntakeSlideDefault(intakeSlide,() -> 0));
         controller1.rightBumper.andNot(controller1.leftBumper).onFalse(new IntakeSlideDefault(intakeSlide,() -> 0));
 
+        controller2.dpadDown.andNot(controller2.dpadUp).onTrue( new TiltPlacer(placer, () -> -1.0));
+        controller2.dpadUp.andNot(controller2.dpadDown).onTrue( new TiltPlacer(placer, () -> 1.0));
+        controller2.dpadDown.andNot(controller2.dpadUp).onFalse( new TiltPlacer(placer, () -> 0));
+        controller2.dpadUp.andNot(controller2.dpadDown).onFalse( new TiltPlacer(placer, () -> 0));
+        controller2.a.andNot(controller2.b).onTrue( new PlacerGrip(placer,() -> SubsystemConstants.Placer.openPosition));
+        controller2.b.andNot(controller2.a).onTrue( new PlacerGrip(placer,() -> SubsystemConstants.Placer.closePosition));
+
+        placerSlide.setDefaultCommand(new PlacerSlideDefault(placerSlide, () -> controller2.leftStickY.getAsDouble()));
+        controller2.leftBumper.andNot(controller2.rightBumper).onTrue(new PlacerSlideToPosition(placerSlide, SubsystemConstants.PlacerSlide.PlacerSlideStowedPosition));
+        controller2.rightBumper.andNot(controller2.leftBumper).onTrue(new PlacerSlideToPosition(placerSlide, SubsystemConstants.PlacerSlide.PlacerSlideMediumPosition));
     }
 
     @Override
@@ -61,6 +77,7 @@ public class Tele extends Robot implements OpModeCore {
         telemetry.addData("heading", drive.getOdometry().getPosition().rotation.getAngleDegrees());
         telemetry.addData("Input 1", Rustboard.getString("input_1", ""));
         telemetry.addData("active rustboard uuid", Rustboard.getActiveRustboard().getUuid());
+        telemetry.addData("SlidePosition",placerSlide.encoder.getPosition());
         //Rustboard.notifyActiveClient("op mode running", NoticeType.POSITIVE);
     }
 }
