@@ -22,6 +22,10 @@ public class TimedLeftPark extends Robot implements OpModeCore {
     @Override
     public void opModeInit() {
         runtime.reset();
+    }
+
+    @Override
+    public void opModeStart(){
         leftTimedAutoPark.schedule();
     }
 
