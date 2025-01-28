@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.constants.SubsystemConstants;
@@ -20,12 +21,16 @@ public class Intake extends Subsystem {
     public final DcMotor motor;
     public final CRServo crServo2;
     public final CRServo crServo1;
+    public final Servo tranferBlock;
 
     public Intake(HardwareMap hardwareMap) {
-        this.motor = hardwareMap.dcMotor.get("IntakeMotor");
+        this.motor = hardwareMap.dcMotor.get("intakeTilt");
         motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        encoder = new PairedEncoder(hardwareMap.get(DcMotor.class, "IntakeMotor"), false);
+        encoder = new PairedEncoder(hardwareMap.get(DcMotor.class, "intakeTilt"), false);
         encoder.reset();
+
+        tranferBlock = hardwareMap.servo.get("transferBlock");
+
 
         this.crServo2 = hardwareMap.crservo.get("intakeServo2");
         crServo2.setDirection(DcMotorSimple.Direction.REVERSE);
