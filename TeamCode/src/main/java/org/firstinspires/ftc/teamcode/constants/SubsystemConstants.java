@@ -51,7 +51,11 @@ public class SubsystemConstants {
 
 
     public static final class PlacerSlide {
+        public static final double defaultSpeed = 0.5;
         //todo figure these out!!!
+        public static final int PlacerSlideStowedPosition = 0;
+        public static final int PlacerSlideMediumPosition = 0;
+        public static final int PlacerSlideHighPosition = 0;
         public static final int maxTargetError = 50;
         public static final int maxExtensionPosition = 1000;
         public static final int minExtensionPosition = 0;
@@ -59,11 +63,12 @@ public class SubsystemConstants {
     }
 
     public static final class Placer {
+        public static final double defaultSpeed = 0.5;
         public static final double lifter0PlacePosition = 0.1;
         public static final double lifter1PlacePosition = 0.7;
         public static final double lifter0StoragePosition = 0.3;
         public static final double lifter1StoragePosition = 0.5;
-        public static final double openPosition = 0.56;
-        public static final double closePosition = 0.62;
+        public static final double openPosition = 0.0;
+        public static final double closePosition = 0.3;
     }
 }
