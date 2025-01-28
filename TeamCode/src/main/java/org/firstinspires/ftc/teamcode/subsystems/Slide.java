@@ -38,8 +38,8 @@ public class Slide extends Subsystem {
         this.placer = placer;
         controller = new PIDController(0.0017, 0.0000008, 0.000003);
 
-        new Trigger(() -> encoder.getTicks() > SubsystemConstants.Slide.preparePlacerPosition && encoder.ticksPerSecond() > 0).onTrue(new InstantCommand(placer::placePosition));
-        new Trigger(() -> encoder.getTicks() < SubsystemConstants.Slide.stowPlacerPosition && targetPosition < 10 || encoder.ticksPerSecond() < -400).onTrue(new InstantCommand(placer::storagePosition));
+//        new Trigger(() -> encoder.getTicks() > SubsystemConstants.Slide.preparePlacerPosition && encoder.ticksPerSecond() > 0).onTrue(new InstantCommand(placer::placePosition));
+//        new Trigger(() -> encoder.getTicks() < SubsystemConstants.Slide.stowPlacerPosition && targetPosition < 10 || encoder.ticksPerSecond() < -400).onTrue(new InstantCommand(placer::storagePosition));
     }
 
     private static boolean gamepadActive(double input) {
