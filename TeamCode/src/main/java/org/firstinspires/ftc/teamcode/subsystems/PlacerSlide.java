@@ -26,10 +26,10 @@ public class PlacerSlide extends Subsystem {
     private double lastInput = 0;
 
     public PlacerSlide(HardwareMap hardwareMap, Placer placer) {
-        motor = hardwareMap.get(DcMotor.class, "slideMotor");
+        motor = hardwareMap.get(DcMotor.class, "placerSlide");
         motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motor.setDirection(DcMotorSimple.Direction.REVERSE);
-        encoder = new PairedEncoder(hardwareMap.get(DcMotor.class, "slideMotor"), false);
+        encoder = new PairedEncoder(hardwareMap.get(DcMotor.class, "placerSlide"), false);
         encoder.reset();
         limit = hardwareMap.get(TouchSensor.class, "limit");
         this.placer = placer;
@@ -71,8 +71,8 @@ public class PlacerSlide extends Subsystem {
         return speed;
     }
 
-    private void drive(double speed) {
-        motor.setPower(speed);
+    public void drive(double speed) {
+        motor.setPower(Range.clip(speed, -SubsystemConstants.PlacerSlide.defaultSpeed, SubsystemConstants.PlacerSlide.defaultSpeed));
         lastSpeed = speed;
     }
 
