@@ -15,6 +15,9 @@ public class SubsystemConstants {
         public static final int minIntakePosition = 0;
         public static final int maxIntakePosition = 0;
 
+        public static final double openGatePosition = 0.5;
+        public static final double closeGatePosition = 0.0;
+
 
         public enum IntakeModes {
             INTAKE(defaultSpeed),
@@ -51,7 +54,7 @@ public class SubsystemConstants {
 
 
     public static final class PlacerSlide {
-        public static final double defaultSpeed = 0.5;
+        public static final double defaultSpeed = 1.0;
         //todo figure these out!!!
         public static final int PlacerSlideStowedPosition = 0;
         public static final int PlacerSlideMediumPosition = 0;
@@ -69,6 +72,6 @@ public class SubsystemConstants {
         public static final double lifter0StoragePosition = 0.3;
         public static final double lifter1StoragePosition = 0.5;
         public static final double openPosition = 0.0;
-        public static final double closePosition = 0.3;
+        public static final double closePosition = 0.2;
     }
 }

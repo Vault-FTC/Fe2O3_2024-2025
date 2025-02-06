@@ -23,8 +23,8 @@ public class IntakeToPosition extends Command {
         intake.runIntakeToPosition();
     }
 
-    @Override
-    public boolean isFinished() {
-        return intake.atTargetPosition();
-    }
+//    @Override
+//    public boolean isFinished() {
+//        return intake.atTargetPosition();
+//    }
 }

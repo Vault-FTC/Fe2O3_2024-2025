@@ -11,7 +11,10 @@ public class PlacerGrip extends Command {
     public PlacerGrip(Placer placer, DoubleSupplier position){
         this.placer = placer;
         this.positionSupplier = position;
-        placer.setGripPosition(position.getAsDouble());
         addRequirements(this.placer);
+    }
+
+    public void execute() {
+        placer.setGripPosition(positionSupplier.getAsDouble());
     }
 }

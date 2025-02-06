@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.commands;
 
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
-import org.firstinspires.ftc.teamcode.subsystems.IntakeSlide;
 import org.rustlib.commandsystem.Command;
 
 import java.util.function.DoubleSupplier;
@@ -18,6 +17,6 @@ public class TiltIntake extends Command {
 
     @Override
     public void execute() {
-        intake.runIntMotor(speedSupplier.getAsDouble());
+        intake.runIntTiltMotor(speedSupplier.getAsDouble());
     }
 }

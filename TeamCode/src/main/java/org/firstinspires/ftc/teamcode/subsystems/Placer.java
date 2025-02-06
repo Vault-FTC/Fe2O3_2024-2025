@@ -1,22 +1,18 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
 import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.Range;
 
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.teamcode.constants.SubsystemConstants;
 import org.rustlib.commandsystem.Subsystem;
-import org.rustlib.rustboard.Rustboard;
 
 public class Placer extends Subsystem {
 //    public final TouchSensor touchSensor;
     private final CRServo lifter0;
     private final CRServo lifter1;
-    private final Servo placer;
+    public final Servo placer;
 //    public DistanceSensor distanceSensor;
 
     public Placer(HardwareMap hardwareMap) {

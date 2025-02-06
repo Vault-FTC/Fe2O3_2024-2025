@@ -10,16 +10,14 @@ import org.rustlib.commandsystem.Subsystem;
 import org.rustlib.hardware.Encoder;
 
 public class IntakeSlide extends Subsystem {
-    public CRServo intSlideServo1;
-    public CRServo intSlideServo2;
+    public Servo intSlideServo1;
 
     public Intake intake;
 
 //    Encoder
 
     public IntakeSlide (HardwareMap hardwareMap, Intake intake){
-        this.intSlideServo1 = hardwareMap.crservo.get("intSlide");
-        intSlideServo1.setDirection(DcMotorSimple.Direction.FORWARD);
+        this.intSlideServo1 = hardwareMap.servo.get("intSlide");;
 
         this.intake = intake;
     }
@@ -35,6 +33,6 @@ public class IntakeSlide extends Subsystem {
 //    }
 
     public void run(double speed){
-        intSlideServo1.setPower(Range.clip(speed,-0.5,0.5));
+
     }
 }
