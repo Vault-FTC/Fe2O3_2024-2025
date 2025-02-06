@@ -15,7 +15,10 @@ import org.firstinspires.ftc.teamcode.commands.TiltPlacer;
 import org.firstinspires.ftc.teamcode.commands.TransferBlock;
 import org.firstinspires.ftc.teamcode.constants.SubsystemConstants;
 import org.firstinspires.ftc.teamcode.opmodes.Robot;
+import org.firstinspires.ftc.teamcode.subsystems.Intake;
 import org.rustlib.commandsystem.InstantCommand;
+import org.rustlib.commandsystem.SequentialCommandGroup;
+import org.rustlib.commandsystem.Trigger;
 import org.rustlib.core.OpModeCore;
 import org.rustlib.geometry.Pose2d;
 import org.rustlib.rustboard.Rustboard;
@@ -55,12 +58,11 @@ public class Tele extends Robot implements OpModeCore {
         controller1.dpadUp.andNot(controller1.dpadDown).onFalse(new TiltIntake(intake, () -> 0));
         controller1.dpadDown.andNot(controller1.dpadUp).onFalse(new TiltIntake(intake, () -> 0));
 
-        controller1.leftBumper.andNot(controller1.rightBumper).onTrue(new IntakeSlideDefault(intakeSlide,() -> 1.0));
-        controller1.rightBumper.andNot(controller1.leftBumper).onTrue(new IntakeSlideDefault(intakeSlide,() -> -1.0));
-        controller1.leftBumper.andNot(controller1.rightBumper).onFalse(new IntakeSlideDefault(intakeSlide,() -> 0));
-        controller1.rightBumper.andNot(controller1.leftBumper).onFalse(new IntakeSlideDefault(intakeSlide,() -> 0));
+        new Trigger(() -> intake.gateSensor.isPressed()).onTrue(new SequentialCommandGroup(new IntakeSlideToPosition(intakeSlide, 1.0), new TransferBlock(intake, () ->  SubsystemConstants.Intake.openGatePosition), new PlacerGrip(placer,()->SubsystemConstants.Placer.openPosition)));
+
         controller2.leftBumper.andNot(controller2.rightBumper).onTrue(new IntakeSlideToPosition(intakeSlide, 1.0));// In
         controller2.rightBumper.andNot(controller2.leftBumper).onTrue(new IntakeSlideToPosition(intakeSlide, 0.3));// Out
+
         controller2.dpadLeft.andNot(controller2.dpadRight).onTrue( new TransferBlock(intake,() -> SubsystemConstants.Intake.closeGatePosition));
         controller2.dpadRight.andNot(controller2.dpadLeft).onTrue( new TransferBlock(intake,() -> SubsystemConstants.Intake.openGatePosition));
 
