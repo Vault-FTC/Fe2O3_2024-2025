@@ -34,9 +34,13 @@ public class Tele extends Robot implements OpModeCore {
         if (alliance == Alliance.RED) {
             backdropPose = redBackdropPose;
         }
+        placerSlide.encoder.reset();
+        intake.encoder.reset();
         drive.enableFastMode();
     }
         public void opModeStart() {
+
+        // Player #1
         drive.setDefaultCommand(new DriveDefault(drive, () -> -controller1.leftStickY.getAsDouble(), () -> controller1.leftStickX.getAsDouble(), () -> -controller1.rightStickX.getAsDouble()));
 
         controller1.b.and(controller1.x).and(controller1.y).onTrue(new InstantCommand(() -> drive.getOdometry().setPosition(new Pose2d())));
@@ -48,41 +52,50 @@ public class Tele extends Robot implements OpModeCore {
         controller1.leftTrigger.andNot(controller1.rightTrigger).onFalse(new RunIntake(intake, SubsystemConstants.Intake.IntakeModes.OFF.speed));
         controller1.rightTrigger.andNot(controller1.leftTrigger).onFalse(new RunIntake(intake, SubsystemConstants.Intake.IntakeModes.OFF.speed));
 
-        controller2.leftTrigger.andNot(controller2.rightTrigger.or(controller1.rightTrigger)).onTrue(new RunIntake(intake, SubsystemConstants.Intake.IntakeModes.OUTTAKE.speed));
-        controller2.rightTrigger.andNot(controller2.leftTrigger.or(controller1.leftTrigger)).onTrue(new RunIntake(intake, SubsystemConstants.Intake.IntakeModes.INTAKE.speed));
-        controller2.leftTrigger.andNot(controller2.rightTrigger.or(controller1.rightTrigger)).onFalse(new RunIntake(intake, SubsystemConstants.Intake.IntakeModes.OFF.speed));
-        controller2.rightTrigger.andNot(controller2.leftTrigger.or(controller1.leftTrigger)).onFalse(new RunIntake(intake, SubsystemConstants.Intake.IntakeModes.OFF.speed));
-
         controller1.dpadUp.andNot(controller1.dpadDown).onTrue(new TiltIntake(intake, () -> -1.0));
         controller1.dpadDown.andNot(controller1.dpadUp).onTrue(new TiltIntake(intake, () -> 1.0));
         controller1.dpadUp.andNot(controller1.dpadDown).onFalse(new TiltIntake(intake, () -> 0));
         controller1.dpadDown.andNot(controller1.dpadUp).onFalse(new TiltIntake(intake, () -> 0));
 
-        new Trigger(() -> intake.gateSensor.isPressed()).onTrue(new SequentialCommandGroup(new IntakeSlideToPosition(intakeSlide, 1.0), new TransferBlock(intake, () ->  SubsystemConstants.Intake.openGatePosition), new PlacerGrip(placer,()->SubsystemConstants.Placer.openPosition)));
+        controller1.leftBumper.andNot(controller2.rightBumper).onTrue(new IntakeSlideToPosition(intakeSlide, 0.85));// In
+        controller1.rightBumper.andNot(controller2.leftBumper).onTrue(new IntakeSlideToPosition(intakeSlide, 0.60));// Out
 
-        controller2.leftBumper.andNot(controller2.rightBumper).onTrue(new IntakeSlideToPosition(intakeSlide, 1.0));// In
-        controller2.rightBumper.andNot(controller2.leftBumper).onTrue(new IntakeSlideToPosition(intakeSlide, 0.3));// Out
+            controller1.dpadLeft.andNot(controller1.dpadRight).onTrue( new TransferBlock(intake,() -> SubsystemConstants.Intake.openGatePosition));
+            controller1.dpadRight.andNot(controller1.dpadLeft).onTrue( new TransferBlock(intake,() -> SubsystemConstants.Intake.closeGatePosition));
 
-        controller2.dpadLeft.andNot(controller2.dpadRight).onTrue( new TransferBlock(intake,() -> SubsystemConstants.Intake.closeGatePosition));
-        controller2.dpadRight.andNot(controller2.dpadLeft).onTrue( new TransferBlock(intake,() -> SubsystemConstants.Intake.openGatePosition));
+        // Automatic sequences and resets
+        new Trigger(() -> intake.gateSensor.isPressed()).onTrue(new SequentialCommandGroup(new IntakeSlideToPosition(intakeSlide, 1.0), new TransferBlock(intake, () ->  SubsystemConstants.Intake.openGatePosition), new PlacerGrip(placer,()->SubsystemConstants.Placer.openPosition),new IntakeToPosition(intake, () -> SubsystemConstants.Intake.transferPosition)));
+        new Trigger(() -> placerSlide.limit.isPressed()).onTrue(new InstantCommand(() -> placerSlide.encoder.reset()));
+
+        // Player #2
+        controller2.dpadLeft.andNot(controller2.dpadRight.or(controller1.dpadLeft.or(controller1.dpadRight))).onTrue( new TransferBlock(intake,() -> SubsystemConstants.Intake.closeGatePosition));
+        controller2.dpadRight.andNot(controller2.dpadLeft.or(controller1.dpadLeft.or(controller1.dpadRight))).onTrue( new TransferBlock(intake,() -> SubsystemConstants.Intake.openGatePosition));
 
         controller2.dpadDown.andNot(controller2.dpadUp).onTrue( new TiltPlacer(placer, () -> -1.0));
         controller2.dpadUp.andNot(controller2.dpadDown).onTrue( new TiltPlacer(placer, () -> 1.0));
         controller2.dpadDown.andNot(controller2.dpadUp).onFalse( new TiltPlacer(placer, () -> 0));
         controller2.dpadUp.andNot(controller2.dpadDown).onFalse( new TiltPlacer(placer, () -> 0));
+
         controller2.a.andNot(controller2.b).onTrue( new PlacerGrip(placer,() -> SubsystemConstants.Placer.openPosition));
         controller2.b.andNot(controller2.a).onTrue( new PlacerGrip(placer,() -> SubsystemConstants.Placer.closePosition));
 
-        placerSlide.setDefaultCommand(new PlacerSlideDefault(placerSlide, () -> controller2.leftStickY.getAsDouble()));
+        placerSlide.setDefaultCommand(new PlacerSlideDefault(placerSlide, () -> -controller2.leftStickY.getAsDouble()));
+
         controller2.leftBumper.andNot(controller2.rightBumper).onTrue(new PlacerSlideToPosition(placerSlide, SubsystemConstants.PlacerSlide.PlacerSlideStowedPosition));
-//        controller2.rightBumper.andNot(controller2.leftBumper).onTrue(new PlacerSlideToPosition(placerSlide, SubsystemConstants.PlacerSlide.PlacerSlideMediumPosition));
+        controller2.rightBumper.andNot(controller2.leftBumper).onTrue(new PlacerSlideToPosition(placerSlide, SubsystemConstants.PlacerSlide.PlacerSlideHighPosition));
     }
 
     @Override
     public void opModeLoop() {
+        telemetry.addData("Runtime", runtime.seconds());
         telemetry.addData("Placer Position", placer.placer.getPosition());
+        telemetry.addData("IntTilt Position", intake.encoder.getTicks());
         telemetry.addData("Gate Position", intake.intGate.getPosition());
+        telemetry.addData("placerSlide Set Position",placerSlide.getTargetPosition());
+        telemetry.addData("placerSlide Position",placerSlide.encoder.getPosition());
+        telemetry.addData("limit", placerSlide.limit.isPressed());
         telemetry.addData("gateSensor", intake.gateSensor.isPressed());
+        telemetry.addData("IntakeSlide Position", intakeSlide.intSlideServo1.getPosition());
         telemetry.addData("XPosition", drive.getOdometry().getPosition().x);
         telemetry.addData("YPosition", drive.getOdometry().getPosition().y);
         telemetry.addData("heading", drive.getOdometry().getPosition().rotation.getAngleDegrees());

@@ -11,6 +11,7 @@ public class PlacerSlideToPosition extends Command {
     public PlacerSlideToPosition(PlacerSlide slide, int position) {
         subsystem = slide;
         this.position = position;
+        addRequirements(subsystem);
     }
 
     @Override

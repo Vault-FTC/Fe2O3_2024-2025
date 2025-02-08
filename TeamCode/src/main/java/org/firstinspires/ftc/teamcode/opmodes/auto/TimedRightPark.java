@@ -20,12 +20,9 @@ public class TimedRightPark extends Robot implements OpModeCore {
     public static Pose2d parkPose = leftParkPose;
 
     @Override
-    public void opModeInit() {
-        runtime.reset();
-    }
-
-    @Override
     public void opModeStart(){
+        runtime.startTime();
+        runtime.reset();
         rightTimedAutoPark.schedule();
     }
 

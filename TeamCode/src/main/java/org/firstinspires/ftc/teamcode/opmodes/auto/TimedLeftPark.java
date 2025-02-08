@@ -20,17 +20,15 @@ import org.rustlib.rustboard.Rustboard;
 public class TimedLeftPark extends Robot implements OpModeCore {
 
     @Override
-    public void opModeInit() {
-        runtime.reset();
-    }
-
-    @Override
     public void opModeStart(){
+        runtime.startTime();
+        runtime.reset();
         leftTimedAutoPark.schedule();
     }
 
     @Override
     public void opModeLoop() {
+        telemetry.addData("Runtime", runtime.seconds());
         telemetry.addData("XPosition", drive.getOdometry().getPosition().x);
         telemetry.addData("YPosition", drive.getOdometry().getPosition().y);
         telemetry.addData("heading", drive.getOdometry().getPosition().rotation.getAngleDegrees());
@@ -38,4 +36,5 @@ public class TimedLeftPark extends Robot implements OpModeCore {
         telemetry.addData("active rustboard uuid", Rustboard.getActiveRustboard().getUuid());
         //Rustboard.notifyActiveClient("op mode running", NoticeType.POSITIVE);
     }
+
 }

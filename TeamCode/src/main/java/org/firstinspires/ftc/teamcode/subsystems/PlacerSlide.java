@@ -7,9 +7,7 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.constants.SubsystemConstants;
-import org.rustlib.commandsystem.InstantCommand;
 import org.rustlib.commandsystem.Subsystem;
-import org.rustlib.commandsystem.Trigger;
 import org.rustlib.control.PIDController;
 import org.rustlib.hardware.PairedEncoder;
 import org.rustlib.rustboard.Rustboard;
@@ -18,7 +16,7 @@ public class PlacerSlide extends Subsystem {
     public final DcMotor motor;
     public final PairedEncoder encoder;
     private final PIDController controller;
-    private final TouchSensor limit;
+    public final TouchSensor limit;
     private final Placer placer;
     private double feedforward = 0;
     private int targetPosition = 0;
@@ -28,12 +26,12 @@ public class PlacerSlide extends Subsystem {
     public PlacerSlide(HardwareMap hardwareMap, Placer placer) {
         motor = hardwareMap.get(DcMotor.class, "placerSlide");
         motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        motor.setDirection(DcMotorSimple.Direction.REVERSE);
+        motor.setDirection(DcMotorSimple.Direction.FORWARD);
         encoder = new PairedEncoder(hardwareMap.get(DcMotor.class, "placerSlide"), false);
         encoder.reset();
         limit = hardwareMap.get(TouchSensor.class, "limit");
         this.placer = placer;
-        controller = new PIDController(0.0017, 0.0000008, 0.000003);
+        controller = new PIDController(0.005, 0, 0);
     }
 
     private static boolean gamepadActive(double input) {
@@ -42,7 +40,7 @@ public class PlacerSlide extends Subsystem {
 
     public void mizoom(double input) {
         double calculatedSpeed;
-        if (gamepadActive(input) && !(input > 0 && encoder.getTicks() > SubsystemConstants.Slide.maxExtensionPosition)) { // If manual control is both requested and allowed
+        if (gamepadActive(input) && !(input > 0 && encoder.getTicks() > SubsystemConstants.PlacerSlide.maxExtensionPosition) && !(input < 0 && encoder.getTicks() < SubsystemConstants.PlacerSlide.minExtensionPosition)) { // If manual control is both requested and allowed
             calculatedSpeed = input + feedforward;
             lastInput = input;
         } else { // If automatic control is requested or manual control is not allowed
@@ -72,6 +70,11 @@ public class PlacerSlide extends Subsystem {
     }
 
     public void drive(double speed) {
+        if (limit.isPressed()) {
+            encoder.reset();
+            targetPosition = Math.max(targetPosition, 0);
+        }
+
         motor.setPower(Range.clip(speed, -SubsystemConstants.PlacerSlide.defaultSpeed, SubsystemConstants.PlacerSlide.defaultSpeed));
         lastSpeed = speed;
     }
@@ -79,14 +82,16 @@ public class PlacerSlide extends Subsystem {
     public void setTargetPosition(int targetPosition) {
         this.targetPosition = Range.clip(targetPosition, SubsystemConstants.PlacerSlide.minExtensionPosition,SubsystemConstants.PlacerSlide.maxExtensionPosition);
     }
-
+    public int getTargetPosition(){
+        return targetPosition;
+    }
     public boolean atTargetPosition() {
         return Math.abs(targetPosition - encoder.getTicks()) < SubsystemConstants.PlacerSlide.maxTargetError;
     }
 
     public void runToPosition(){
-        motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motor.setTargetPosition(targetPosition);
+        mizoom(controller.calculate(encoder.getPosition(),targetPosition));
     }
 
     @Override

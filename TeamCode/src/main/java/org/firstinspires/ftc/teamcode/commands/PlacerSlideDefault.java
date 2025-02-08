@@ -18,6 +18,6 @@ public class PlacerSlideDefault extends Command {
 
     @Override
     public void execute() {
-        slide.drive(speedSupplier.getAsDouble());
+        slide.mizoom(speedSupplier.getAsDouble());
     }
 }

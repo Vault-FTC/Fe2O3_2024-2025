@@ -26,10 +26,12 @@ public class Intake extends Subsystem {
     public final TouchSensor gateSensor;
 
     public Intake(HardwareMap hardwareMap) {
+
         this.motor = hardwareMap.dcMotor.get("intakeTilt");
         motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motor.setDirection(DcMotorSimple.Direction.REVERSE);
+
         encoder = new PairedEncoder(hardwareMap.get(DcMotor.class, "intakeTilt"), false);
-        encoder.reset();
 
         intGate = hardwareMap.servo.get("intakeGate");
         gateSensor = hardwareMap.touchSensor.get("gateSensor");
@@ -65,6 +67,6 @@ public class Intake extends Subsystem {
 
     public void runIntakeToPosition() {
         motor.setTargetPosition(targetPosition);
-        motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        run(controller.calculate(encoder.getTicks(),targetPosition));
     }
 }
