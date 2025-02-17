@@ -3,17 +3,13 @@ package org.firstinspires.ftc.teamcode.opmodes;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.VoltageUnit;
-import org.firstinspires.ftc.teamcode.commands.IntakeToPosition;
 import org.firstinspires.ftc.teamcode.commands.LeftTimedAutoPark;
 import org.firstinspires.ftc.teamcode.commands.RightTimedAutoPark;
-import org.firstinspires.ftc.teamcode.opmodes.auto.TimedLeftPark;
-import org.firstinspires.ftc.teamcode.opmodes.auto.TimedRightPark;
 import org.firstinspires.ftc.teamcode.subsystems.Drive;
 import org.firstinspires.ftc.teamcode.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.IntakeSlide;
 import org.firstinspires.ftc.teamcode.subsystems.Placer;
 import org.firstinspires.ftc.teamcode.subsystems.PlacerSlide;
-import org.firstinspires.ftc.teamcode.subsystems.Slide;
 import org.rustlib.config.HardwareConfiguration;
 import org.rustlib.config.PreferenceEditor;
 import org.rustlib.core.RobotBase;
@@ -47,12 +43,7 @@ public abstract class Robot extends RobotBase {
                 .addMotor("rb", 1, HardwareConfiguration.Motors.GOBILDA_5201_SERIES_MOTOR, HardwareConfiguration.HubType.CONTROL_HUB)
                 .addMotor("lf", 2, HardwareConfiguration.Motors.GOBILDA_5201_SERIES_MOTOR, HardwareConfiguration.HubType.CONTROL_HUB)
                 .addMotor("lb", 3, HardwareConfiguration.Motors.GOBILDA_5201_SERIES_MOTOR, HardwareConfiguration.HubType.CONTROL_HUB)
-//                .addMotor("intakeSlide", 0, HardwareConfiguration.Motors.GOBILDA_5201_SERIES_MOTOR, HardwareConfiguration.HubType.EXPANSION_HUB)
-//                .addMotor("intakeTilt", 1, HardwareConfiguration.Motors.GOBILDA_5201_SERIES_MOTOR, HardwareConfiguration.HubType.EXPANSION_HUB)
-//                .addServo("intakeServo1", 0, HardwareConfiguration.Servos.SMART_SERVO, HardwareConfiguration.HubType.CONTROL_HUB)
-//                .addServo("intakeServo2", 0, HardwareConfiguration.Servos.SMART_SERVO, HardwareConfiguration.HubType.EXPANSION_HUB)
-//                .addServo("ledDriver", 2, HardwareConfiguration.Servos.REV_BLINKIN_LED_DRIVER, HardwareConfiguration.HubType.CONTROL_HUB)
-//                .addI2CDevice("slide limit", 0, 0, HardwareConfiguration.I2CDevices.REV_DISTANCE_SENSOR, HardwareConfiguration.HubType.CONTROL_HUB)
+
                 .build();
 
         //cameraServer = new CameraServer(hardwareMap, "Webcam0");

@@ -2,15 +2,8 @@ package org.firstinspires.ftc.teamcode.opmodes.auto;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-import org.firstinspires.ftc.teamcode.commands.DriveDefault;
-import org.firstinspires.ftc.teamcode.commands.IntakeSlideDefault;
-import org.firstinspires.ftc.teamcode.commands.RunIntake;
-import org.firstinspires.ftc.teamcode.commands.TiltIntake;
-import org.firstinspires.ftc.teamcode.constants.SubsystemConstants;
 import org.firstinspires.ftc.teamcode.opmodes.Robot;
-import org.rustlib.commandsystem.InstantCommand;
 import org.rustlib.core.OpModeCore;
-import org.rustlib.core.RobotBase;
 import org.rustlib.geometry.Pose2d;
 import org.rustlib.rustboard.Rustboard;
 

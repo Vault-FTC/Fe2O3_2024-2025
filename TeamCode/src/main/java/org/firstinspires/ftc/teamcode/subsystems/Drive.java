@@ -15,7 +15,6 @@ public class Drive extends DriveSubsystem {
     private final MecanumBase base;
     private final Odometry odometry;
     private double multiplier = Mode.FAST.multiplier;
-
     public Drive(HardwareMap hardwareMap) {
         odometry = Odometry.getBuilder()
                 .defineLeftEncoder(new PairedEncoder(hardwareMap.get(DcMotor.class, "lf"), false))

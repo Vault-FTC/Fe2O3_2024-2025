@@ -3,9 +3,8 @@ package org.firstinspires.ftc.teamcode.opmodes.tele;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.commands.DriveDefault;
-import org.firstinspires.ftc.teamcode.commands.IntakeSlideDefault;
 import org.firstinspires.ftc.teamcode.commands.IntakeSlideToPosition;
-import org.firstinspires.ftc.teamcode.commands.IntakeToPosition;
+import org.firstinspires.ftc.teamcode.commands.IntakeTiltToPosition;
 import org.firstinspires.ftc.teamcode.commands.PlacerGrip;
 import org.firstinspires.ftc.teamcode.commands.PlacerSlideDefault;
 import org.firstinspires.ftc.teamcode.commands.PlacerSlideToPosition;
@@ -15,12 +14,12 @@ import org.firstinspires.ftc.teamcode.commands.TiltPlacer;
 import org.firstinspires.ftc.teamcode.commands.TransferBlock;
 import org.firstinspires.ftc.teamcode.constants.SubsystemConstants;
 import org.firstinspires.ftc.teamcode.opmodes.Robot;
-import org.firstinspires.ftc.teamcode.subsystems.Intake;
 import org.rustlib.commandsystem.InstantCommand;
 import org.rustlib.commandsystem.SequentialCommandGroup;
 import org.rustlib.commandsystem.Trigger;
 import org.rustlib.core.OpModeCore;
 import org.rustlib.geometry.Pose2d;
+import org.rustlib.rustboard.NoticeType;
 import org.rustlib.rustboard.Rustboard;
 
 @TeleOp(name = "TeleOp")
@@ -57,14 +56,14 @@ public class Tele extends Robot implements OpModeCore {
         controller1.dpadUp.andNot(controller1.dpadDown).onFalse(new TiltIntake(intake, () -> 0));
         controller1.dpadDown.andNot(controller1.dpadUp).onFalse(new TiltIntake(intake, () -> 0));
 
-        controller1.leftBumper.andNot(controller2.rightBumper).onTrue(new IntakeSlideToPosition(intakeSlide, 0.85));// In
-        controller1.rightBumper.andNot(controller2.leftBumper).onTrue(new IntakeSlideToPosition(intakeSlide, 0.60));// Out
+        controller1.leftBumper.andNot(controller2.rightBumper).onTrue(new IntakeSlideToPosition(intakeSlide, SubsystemConstants.IntakeSlide.stowedPosition));// In
+        controller1.rightBumper.andNot(controller2.leftBumper).onTrue(new IntakeSlideToPosition(intakeSlide, SubsystemConstants.IntakeSlide.placePosition));// Out
 
             controller1.dpadLeft.andNot(controller1.dpadRight).onTrue( new TransferBlock(intake,() -> SubsystemConstants.Intake.openGatePosition));
             controller1.dpadRight.andNot(controller1.dpadLeft).onTrue( new TransferBlock(intake,() -> SubsystemConstants.Intake.closeGatePosition));
 
         // Automatic sequences and resets
-        new Trigger(() -> intake.gateSensor.isPressed()).onTrue(new SequentialCommandGroup(new IntakeSlideToPosition(intakeSlide, 1.0), new TransferBlock(intake, () ->  SubsystemConstants.Intake.openGatePosition), new PlacerGrip(placer,()->SubsystemConstants.Placer.openPosition),new IntakeToPosition(intake, () -> SubsystemConstants.Intake.transferPosition)));
+        //new Trigger(() -> intake.gateSensor.isPressed()).onTrue(new SequentialCommandGroup(new IntakeSlideToPosition(intakeSlide, 1.0), new TransferBlock(intake, () ->  SubsystemConstants.Intake.openGatePosition), new PlacerGrip(placer,()->SubsystemConstants.Placer.openPosition),new IntakeTiltToPosition(intake, () -> SubsystemConstants.Intake.transferPosition)));
         new Trigger(() -> placerSlide.limit.isPressed()).onTrue(new InstantCommand(() -> placerSlide.encoder.reset()));
 
         // Player #2
@@ -87,22 +86,7 @@ public class Tele extends Robot implements OpModeCore {
 
     @Override
     public void opModeLoop() {
-        telemetry.addData("Runtime", runtime.seconds());
-        telemetry.addData("Placer Position", placer.placer.getPosition());
-        telemetry.addData("IntTilt Position", intake.encoder.getTicks());
-        telemetry.addData("Gate Position", intake.intGate.getPosition());
-        telemetry.addData("placerSlide Set Position",placerSlide.getTargetPosition());
-        telemetry.addData("placerSlide Position",placerSlide.encoder.getPosition());
-        telemetry.addData("limit", placerSlide.limit.isPressed());
-        telemetry.addData("gateSensor", intake.gateSensor.isPressed());
-        telemetry.addData("IntakeSlide Position", intakeSlide.intSlideServo1.getPosition());
-        telemetry.addData("XPosition", drive.getOdometry().getPosition().x);
-        telemetry.addData("YPosition", drive.getOdometry().getPosition().y);
-        telemetry.addData("heading", drive.getOdometry().getPosition().rotation.getAngleDegrees());
-        telemetry.addData("Input 1", Rustboard.getString("input_1", ""));
-        telemetry.addData("active rustboard uuid", Rustboard.getActiveRustboard().getUuid());
-        telemetry.addData("SlidePosition",placerSlide.encoder.getPosition());
-        //Rustboard.notifyActiveClient("op mode running", NoticeType.POSITIVE);
+        Rustboard.notifyActiveClient("op mode running", NoticeType.POSITIVE);
     }
 }
 

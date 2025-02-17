@@ -10,11 +10,11 @@ public class SubsystemConstants {
 
     public static final class Intake {
         public static final double defaultSpeed = 1.0;
-
-        //todo find these!!!
-        public static final int minIntakePosition = 0;
-        public static final int transferPosition = 0;
-        public static final int maxIntakePosition = 0;
+        public static final int minIntakeTiltPosition = -30;
+        public static final int transferPosition = -10;
+        public static final int IntakeTiltFeedPosition = 50;
+        public static final int maxTargetError = 10;
+        public static final int maxIntakeTiltPosition = 60;
         public static final double openGatePosition = 0.5;
         public static final double closeGatePosition = 0.0;
 
@@ -34,13 +34,9 @@ public class SubsystemConstants {
     }
 
     public static final class IntakeSlide {
-        public static final int prepareIntakePosition = 80;
-        public static final int maxExtensionPosition = 95;
-        public static final int minExtensionPosition = 0;
-        public static final int maxTargetError = 10;
-        public static final int defaultIntakePosition = 75;
-        public static final int stowedPosition = 10;
-        public static final int autoPlacePosition = 75;
+        public static final double stowedPosition = 0.85;
+        public static final double placePosition = 0.60;
+
     }
 
     public static final class Slide {

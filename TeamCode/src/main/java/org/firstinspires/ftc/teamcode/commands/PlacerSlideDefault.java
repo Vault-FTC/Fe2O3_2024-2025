@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.commands;
 
 import org.firstinspires.ftc.teamcode.subsystems.PlacerSlide;
-import org.firstinspires.ftc.teamcode.subsystems.Slide;
 import org.rustlib.commandsystem.Command;
 
 import java.util.function.DoubleSupplier;

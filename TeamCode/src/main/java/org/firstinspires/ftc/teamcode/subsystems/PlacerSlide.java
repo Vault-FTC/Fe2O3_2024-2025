@@ -31,7 +31,7 @@ public class PlacerSlide extends Subsystem {
         encoder.reset();
         limit = hardwareMap.get(TouchSensor.class, "limit");
         this.placer = placer;
-        controller = new PIDController(0.005, 0, 0);
+        controller = new PIDController(0.0017, 0.0000008, 0.000003);
     }
 
     private static boolean gamepadActive(double input) {
@@ -60,7 +60,6 @@ public class PlacerSlide extends Subsystem {
 
     private double applyAccelerationLimits(double speed) {
         double accelMax = Rustboard.getDouble("slide accel", 0.5);
-        ;
         if (speed > 0) {
             speed = Math.min(lastSpeed + accelMax, speed);
         } else {
