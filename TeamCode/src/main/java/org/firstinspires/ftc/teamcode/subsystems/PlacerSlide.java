@@ -13,7 +13,8 @@ import org.rustlib.hardware.PairedEncoder;
 import org.rustlib.rustboard.Rustboard;
 
 public class PlacerSlide extends Subsystem {
-    public final DcMotor motor;
+    public final DcMotor motor0;
+    public final DcMotor motor1;
     public final PairedEncoder encoder;
     private final PIDController controller;
     public final TouchSensor limit;
@@ -24,9 +25,12 @@ public class PlacerSlide extends Subsystem {
     private double lastInput = 0;
 
     public PlacerSlide(HardwareMap hardwareMap, Placer placer) {
-        motor = hardwareMap.get(DcMotor.class, "placerSlide");
-        motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        motor.setDirection(DcMotorSimple.Direction.FORWARD);
+        motor0 = hardwareMap.get(DcMotor.class, "placerSlide");
+        motor0.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motor0.setDirection(DcMotorSimple.Direction.FORWARD);
+        motor1 = hardwareMap.get(DcMotor.class, "placerSlide");
+        motor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        motor1.setDirection(DcMotorSimple.Direction.FORWARD);
         encoder = new PairedEncoder(hardwareMap.get(DcMotor.class, "placerSlide"), false);
         encoder.reset();
         limit = hardwareMap.get(TouchSensor.class, "limit");
@@ -74,7 +78,8 @@ public class PlacerSlide extends Subsystem {
             targetPosition = Math.max(targetPosition, 0);
         }
 
-        motor.setPower(Range.clip(speed, -SubsystemConstants.PlacerSlide.defaultSpeed, SubsystemConstants.PlacerSlide.defaultSpeed));
+        motor0.setPower(Range.clip(speed, -SubsystemConstants.PlacerSlide.defaultSpeed, SubsystemConstants.PlacerSlide.defaultSpeed));
+        motor1.setPower(Range.clip(speed, -SubsystemConstants.PlacerSlide.defaultSpeed, SubsystemConstants.PlacerSlide.defaultSpeed));
         lastSpeed = speed;
     }
 
@@ -89,7 +94,8 @@ public class PlacerSlide extends Subsystem {
     }
 
     public void runToPosition(){
-        motor.setTargetPosition(targetPosition);
+        motor0.setTargetPosition(targetPosition);
+        motor1.setTargetPosition(targetPosition);
         mizoom(controller.calculate(encoder.getPosition(),targetPosition));
     }
 
