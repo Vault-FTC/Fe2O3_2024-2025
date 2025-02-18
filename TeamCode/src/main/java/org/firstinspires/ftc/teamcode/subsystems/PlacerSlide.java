@@ -25,10 +25,10 @@ public class PlacerSlide extends Subsystem {
     private double lastInput = 0;
 
     public PlacerSlide(HardwareMap hardwareMap, Placer placer) {
-        motor0 = hardwareMap.get(DcMotor.class, "placerSlide");
+        motor0 = hardwareMap.get(DcMotor.class, "placerSlide1");
         motor0.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motor0.setDirection(DcMotorSimple.Direction.FORWARD);
-        motor1 = hardwareMap.get(DcMotor.class, "placerSlide");
+        motor1 = hardwareMap.get(DcMotor.class, "placerSlide2");
         motor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motor1.setDirection(DcMotorSimple.Direction.FORWARD);
         encoder = new PairedEncoder(hardwareMap.get(DcMotor.class, "placerSlide"), false);
