@@ -31,7 +31,7 @@ public class PlacerSlide extends Subsystem {
         motor1 = hardwareMap.get(DcMotor.class, "placerSlide2");
         motor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motor1.setDirection(DcMotorSimple.Direction.FORWARD);
-        encoder = new PairedEncoder(hardwareMap.get(DcMotor.class, "placerSlide"), false);
+        encoder = new PairedEncoder(hardwareMap.get(DcMotor.class, "placerSlide1"), false);
         encoder.reset();
         limit = hardwareMap.get(TouchSensor.class, "limit");
         this.placer = placer;
