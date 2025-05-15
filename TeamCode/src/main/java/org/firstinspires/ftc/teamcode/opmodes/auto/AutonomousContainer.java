@@ -18,10 +18,10 @@ public abstract class AutonomousContainer extends Robot implements AutonomousCor
     protected static Pose2d blueLeftStartPosition = new Pose2d(58.944, 7.916899, new Rotation2d(Math.PI));
     protected static Pose2d blueRightStartPosition = blueLeftStartPosition.translateX(Field.tileLengthIn * 2);
     private OpenCVGameElementDetector gameElementDetector;
-    private SequentialCommandGroup blueLeftMotionPath =
+    private final SequentialCommandGroup blueLeftMotionPath =
             new SequentialCommandGroup(
                     new FollowPathCommand(
-                            () -> Path.getBuilder().addWaypoint(0,5).addWaypoint(0,0).setDefaultMaxVelocity(0.8).setDefaultRadius(2).build(), drive)
+                            () -> Path.getBuilder().addWaypoint(0,5).addWaypoint(0,12).setDefaultMaxVelocity(0.8).setDefaultRadius(2).build(), drive)
             );
     protected PurePursuitAutonomousCommand blueLeftCommand = new PurePursuitAutonomousCommand(
             blueLeftStartPosition,
@@ -50,13 +50,13 @@ public abstract class AutonomousContainer extends Robot implements AutonomousCor
 
     @Override
     public void opModeInit() {
-//        gameElementDetector = OpenCVGameElementDetector.getBuilder()
-//                .setHardwareMap(hardwareMap)
-//                .setCameraName("game element detector cam")
-//                .setStreamSize(OpenCVGameElementDetector.StreamDimension.HIGH_DEF)
-//                .setDetectorPipeline(new DetectorPipeline())
-//                .setFrameAveragingCount(VisionConstants.elementDetectionFrameAverageCount)
-//                .closePipelineOnOpModeStart()
-//                .build();
+        gameElementDetector = OpenCVGameElementDetector.getBuilder()
+                .setHardwareMap(hardwareMap)
+                .setCameraName("game element detector cam")
+                .setStreamSize(OpenCVGameElementDetector.StreamDimension.HIGH_DEF)
+                .setDetectorPipeline(new DetectorPipeline())
+                .setFrameAveragingCount(VisionConstants.elementDetectionFrameAverageCount)
+                .closePipelineOnOpModeStart()
+                .build();
     }
 }

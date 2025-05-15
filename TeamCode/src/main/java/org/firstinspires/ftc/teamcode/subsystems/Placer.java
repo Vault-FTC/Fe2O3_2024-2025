@@ -16,10 +16,10 @@ public class Placer extends Subsystem {
 //    public DistanceSensor distanceSensor;
 
     public Placer(HardwareMap hardwareMap) {
-        lifter0 = hardwareMap.get(CRServo.class, "lifter0");
+        lifter0 = hardwareMap.get(CRServo.class, "placerTilt1");
         lifter0.setDirection(CRServo.Direction.FORWARD);
         lifter0.close();
-        lifter1 = hardwareMap.get(CRServo.class, "lifter1");
+        lifter1 = hardwareMap.get(CRServo.class, "placerTilt2");
         lifter1.setDirection(CRServo.Direction.FORWARD);
         lifter1.close();
         placer = hardwareMap.get(Servo.class, "placer");

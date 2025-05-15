@@ -46,8 +46,8 @@ public class Tele extends Robot implements OpModeCore {
         controller1.a.and(controller1.b).andNot(controller1.x).andNot(controller1.y).onTrue(new InstantCommand(() -> drive.enableFastMode()));
         controller1.a.and(controller1.x).andNot(controller1.b).andNot(controller1.y).onTrue(new InstantCommand(() -> drive.enableSlowMode()));
 
-        controller1.leftTrigger.andNot(controller1.rightTrigger).onTrue(new RunIntake(intake, SubsystemConstants.Intake.IntakeModes.OUTTAKE.speed));
-        controller1.rightTrigger.andNot(controller1.leftTrigger).onTrue(new RunIntake(intake, SubsystemConstants.Intake.IntakeModes.INTAKE.speed));
+        controller1.leftTrigger.andNot(controller1.rightTrigger).onTrue(new RunIntake(intake, SubsystemConstants.Intake.IntakeModes.INTAKE.speed));
+        controller1.rightTrigger.andNot(controller1.leftTrigger).onTrue(new RunIntake(intake, SubsystemConstants.Intake.IntakeModes.OUTTAKE.speed));
         controller1.leftTrigger.andNot(controller1.rightTrigger).onFalse(new RunIntake(intake, SubsystemConstants.Intake.IntakeModes.OFF.speed));
         controller1.rightTrigger.andNot(controller1.leftTrigger).onFalse(new RunIntake(intake, SubsystemConstants.Intake.IntakeModes.OFF.speed));
 
@@ -56,15 +56,20 @@ public class Tele extends Robot implements OpModeCore {
         controller1.dpadUp.andNot(controller1.dpadDown).onFalse(new TiltIntake(intake, () -> 0));
         controller1.dpadDown.andNot(controller1.dpadUp).onFalse(new TiltIntake(intake, () -> 0));
 
-        controller1.leftBumper.andNot(controller2.rightBumper).onTrue(new IntakeSlideToPosition(intakeSlide, SubsystemConstants.IntakeSlide.stowedPosition));// In
-        controller1.rightBumper.andNot(controller2.leftBumper).onTrue(new IntakeSlideToPosition(intakeSlide, SubsystemConstants.IntakeSlide.placePosition));// Out
 
-            controller1.dpadLeft.andNot(controller1.dpadRight).onTrue( new TransferBlock(intake,() -> SubsystemConstants.Intake.openGatePosition));
-            controller1.dpadRight.andNot(controller1.dpadLeft).onTrue( new TransferBlock(intake,() -> SubsystemConstants.Intake.closeGatePosition));
+
+//            controller1.dpadUp.andNot(controller2.dpadDown).onTrue(new IntakeTiltToPosition(intake,() -> SubsystemConstants.Intake.transferPosition));
+//            controller1.dpadUp.andNot(controller2.dpadDown).onTrue(new IntakeTiltToPosition(intake,() -> SubsystemConstants.Intake.transferPosition));
+
+        controller1.leftBumper.andNot(controller2.rightBumper).onTrue(new IntakeSlideToPosition(intakeSlide, SubsystemConstants.IntakeSlide.stowedPosition));// In
+        controller1.rightBumper.andNot(controller2.leftBumper).onTrue(new IntakeSlideToPosition(intakeSlide, SubsystemConstants.IntakeSlide.outPosition));// Out
+
+        controller1.dpadLeft.andNot(controller1.dpadRight).onTrue( new TransferBlock(intake,() -> SubsystemConstants.Intake.openGatePosition));
+        controller1.dpadRight.andNot(controller1.dpadLeft).onTrue( new TransferBlock(intake,() -> SubsystemConstants.Intake.closeGatePosition));
 
         // Automatic sequences and resets
-        //new Trigger(() -> intake.gateSensor.isPressed()).onTrue(new SequentialCommandGroup(new IntakeSlideToPosition(intakeSlide, 1.0), new TransferBlock(intake, () ->  SubsystemConstants.Intake.openGatePosition), new PlacerGrip(placer,()->SubsystemConstants.Placer.openPosition),new IntakeTiltToPosition(intake, () -> SubsystemConstants.Intake.transferPosition)));
-        new Trigger(() -> placerSlide.limit.isPressed()).onTrue(new InstantCommand(() -> placerSlide.encoder.reset()));
+        new Trigger(() -> intake.gateSensor.isPressed()).onTrue(new SequentialCommandGroup(new IntakeSlideToPosition(intakeSlide, 1.0), new TransferBlock(intake, () ->  SubsystemConstants.Intake.openGatePosition), new PlacerGrip(placer,()->SubsystemConstants.Placer.openPosition),new IntakeTiltToPosition(intake, () -> SubsystemConstants.Intake.transferPosition)));
+//        new Trigger(() -> placerSlide.limit.isPressed()).onFalse(new InstantCommand(() -> placerSlide.encoder.reset()));
 
         // Player #2
         controller2.dpadLeft.andNot(controller2.dpadRight.or(controller1.dpadLeft.or(controller1.dpadRight))).onTrue( new TransferBlock(intake,() -> SubsystemConstants.Intake.closeGatePosition));
@@ -87,6 +92,15 @@ public class Tele extends Robot implements OpModeCore {
     @Override
     public void opModeLoop() {
         Rustboard.notifyActiveClient("op mode running", NoticeType.POSITIVE);
+        telemetry.addData("intakeTouch", intake.gateSensor.isPressed());
+        telemetry.addData("intTilt Pose",intake.encoder.getTicks());
+        telemetry.addData("Robot rotation:", drive.getOdometry().getPosition().rotation);
+        telemetry.addData("Robot X position:", drive.getOdometry().getPosition().x);
+        telemetry.addData("Robot Y position:", drive.getOdometry().getPosition().y);
+        telemetry.addData("Robot BackEncoder:", drive.getOdometry().backEncoder.getTicks());
+        telemetry.addData("Robot LeftEncoder:", drive.getOdometry().leftEncoder.getTicks());
+        telemetry.addData("Robot RightEncoder:", drive.getOdometry().rightEncoder.getTicks());
+        telemetry.addData("Placer Grip Position", placer.placer.getPosition());
     }
 }
 

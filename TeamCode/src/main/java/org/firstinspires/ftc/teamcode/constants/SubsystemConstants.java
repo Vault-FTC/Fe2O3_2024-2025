@@ -11,7 +11,7 @@ public class SubsystemConstants {
     public static final class Intake {
         public static final double defaultSpeed = 1.0;
         public static final int minIntakeTiltPosition = -30;
-        public static final int transferPosition = -10;
+        public static final int transferPosition = 0;
         public static final int IntakeTiltFeedPosition = 50;
         public static final int maxTargetError = 10;
         public static final int maxIntakeTiltPosition = 60;
@@ -34,8 +34,8 @@ public class SubsystemConstants {
     }
 
     public static final class IntakeSlide {
-        public static final double stowedPosition = 0.85;
-        public static final double placePosition = 0.60;
+        public static final double stowedPosition = 0.65;
+        public static final double outPosition = 0.01;
 
     }
 
@@ -67,7 +67,7 @@ public class SubsystemConstants {
         public static final double lifter1PlacePosition = 0.7;
         public static final double lifter0StoragePosition = 0.3;
         public static final double lifter1StoragePosition = 0.5;
-        public static final double openPosition = 0.0;
-        public static final double closePosition = 0.2;
+        public static final double openPosition = 0.45;
+        public static final double closePosition = 0.9;
     }
 }
